@@ -1,0 +1,37 @@
+This is a revocation certificate for the OpenPGP key:
+
+pub   rsa4096 2021-05-12 [S]
+      FA556BF4ECBC19546EAA7251AE12E740FE4FD09F
+uid          codefresh <eli.fish@codefresh.io>
+
+A revocation certificate is a kind of "kill switch" to publicly
+declare that a key shall not anymore be used.  It is not possible
+to retract such a revocation certificate once it has been published.
+
+Use it to revoke this key in case of a compromise or loss of
+the secret key.  However, if the secret key is still accessible,
+it is better to generate a new revocation certificate and give
+a reason for the revocation.  For details see the description of
+of the gpg command "--generate-revocation" in the GnuPG manual.
+
+To avoid an accidental use of this file, a colon has been inserted
+before the 5 dashes below.  Remove this colon with a text editor
+before importing and publishing this revocation certificate.
+
+:-----BEGIN PGP PUBLIC KEY BLOCK-----
+Comment: This is a revocation certificate
+
+iQI2BCABCAAgFiEE+lVr9Oy8GVRuqnJRrhLnQP5P0J8FAmCcQN0CHQAACgkQrhLn
+QP5P0J9jVw/+I2/sI7sZVY0XIUoFRGEDuDz7OiI98PksYinyDfQNQpD07U+eYrf6
+fPZ8/SiMoY2R/3EHXJdJWN5Z36MLv8CMqvFHl9M/D9pRXSNsPfrgjEGqcUYGvJP1
+KUDEql5wPdQPD+LtII367LtU1iBS8zxCuVxsTsESdq+eXydHl39ryxe4lWA08NHf
+QjyWMfDykoi8MzBiQ87IN6plzrwzWu6ZBgI1sYMlDF80u6GPu/KTjyY5q6X7Jr0a
+gRRPOwCZWn95UEIZ58Fldoww8LsGPJNhBwYnCQTuum+w9HjuOWJCANeOlHvqBBBd
+e8fkFOpmKJUqtlsrRNqHaYAHYXKKft/OlEvLuGR7uUDF9Gi+fblVM4vYgiZjo9sH
+fnJhC/LwLah+lcJclwUPZIg3gpwFrEpgxIXYBQlonTuh7T9WS2j0HfZ6I55wBo86
+K8BhJtwiR0Vr2kfymDMJCmKEnI0NBbdwy01PPv0OQHU7omJaVMoUazIQINfAuBAN
+ynwGPgoJ4QZLzuyr/rzodZnfvlbCv48HinuW7lvVPxOB7sfa9rvhPEBefc9GDDDw
+02MTb0S7jKNLAPMe0txn4pPJNSPqOjZED9JkKjiUDLbdtpXGNfSpVMAGxutNtljq
+VxojqWJeYMJzfYNI2ksjxmTMS4XJmLoPWEdBX5NYp61ZsFHQ+UUwCeg=
+=jAwZ
+-----END PGP PUBLIC KEY BLOCK-----
