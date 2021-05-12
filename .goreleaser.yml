@@ -22,14 +22,6 @@ checksum:
   algorithm: sha256
 signs:
   - artifacts: checksum
-    args:
-      - "--batch"
-      - "--local-user"
-      - "${GPG_FINGERPRINT}"
-      - "--output"
-      - "${signature}"
-      - "--detach-sign"
-      - "${artifact}"
 release:
   # draft: true
 changelog:
