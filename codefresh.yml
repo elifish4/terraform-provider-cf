@@ -1,0 +1,46 @@
+version: '1.0'
+stages:
+  - clone
+  - test
+  - release
+steps:
+  main_clone:
+    title: 'Cloning main repository...'
+    stage: clone
+    type: git-clone
+    repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
+    revision: "${{CF_REVISION}}"
+    git: cf_github
+
+  go_fmt:
+    title: 'Formatting'
+    stage: test
+    image:  goreleaser/goreleaser:latest
+    commands:
+      - go fmt
+
+  prepare_env_vars:
+    title: 'Preparing environment variables...'
+    stage: release
+    image: codefreshio/ci-helpers
+    commands:
+      - source /get-token/get-gh-token.sh
+      - cf_export GITHUB_TOKEN
+      - cf_export GPG_PRIVATE_KEY
+      - cf_export GPG_FINGERPRINT
+      - cf_export PASSPHRASE
+    when:
+      condition:
+        all:
+          release: "'${{RELEASE}}' == 'true'"
+
+  release_binaries:
+    title: Create release in Github
+    image:  goreleaser/goreleaser:latest
+    stage: release
+    commands:
+      - goreleaser release --rm-dist
+    when:
+      condition:
+        all:
+          release: "'${{RELEASE}}' == 'true'"
