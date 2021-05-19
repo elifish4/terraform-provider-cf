@@ -39,6 +39,15 @@ steps:
     image:  goreleaser/goreleaser:latest
     stage: release
     commands:
+      - apk update
+      - apk add --update gpg
+      - apk add gpg
+      - apk fetch gnupg
+      - apk add gnupg
+      - git config user.signingkey ${SIGNINGKEY}
+      - echo $GPG_KEY > private.key
+      - gpg --import provate.key
+      - gpg --list-secret-keys --keyid-format LONG
       - goreleaser release --rm-dist
     when:
       condition:
