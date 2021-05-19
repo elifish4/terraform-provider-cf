@@ -2,6 +2,7 @@ version: '1.0'
 stages:
   - clone
   - test
+  - pakcages
   - release
 steps:
   main_clone:
@@ -10,12 +11,12 @@ steps:
     type: git-clone
     repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
     revision: "${{CF_REVISION}}"
-    git: cf_github
+    git: github
 
   go_fmt:
     title: 'Formatting'
     stage: test
-    image:  goreleaser/goreleaser:latest
+    image:  goreleaser/goreleaser:v0.133
     commands:
       - go fmt
 
@@ -27,9 +28,15 @@ steps:
       - source /get-token/get-gh-token.sh
       - cf_export GITHUB_TOKEN
       - cf_export GPG_PRIVATE_KEY
-      - cf_export GPG_public_KEY
       - cf_export GPG_FINGERPRINT
       - cf_export PASSPHRASE
+      - apk update
+      - apk fetch gnupg
+      - apk add gnupg
+      - git config user.signingkey ${SIGNINGKEY}
+      - echo ${GPG_KEY} > private.key
+      - gpg --import provate.key
+      - gpg --list-secret-keys --keyid-format LONG
     when:
       condition:
         all:
@@ -37,16 +44,13 @@ steps:
 
   release_binaries:
     title: Create release in Github
-    image:  goreleaser/goreleaser:latest
+    image:  goreleaser/goreleaser:v0.133
     stage: release
+    environment: 
+      - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
+      - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
+      - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
-      - apk update
-      - apk fetch gnupg
-      - apk add gnupg
-      - git config user.signingkey ${SIGNINGKEY}
-      - echo $GPG_KEY > private.key
-      - gpg --import provate.key
-      - gpg --list-secret-keys --keyid-format LONG
       - goreleaser release --rm-dist
     when:
       condition:
