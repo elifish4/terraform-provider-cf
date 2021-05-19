@@ -35,7 +35,7 @@ steps:
       - apk add gnupg
       - git config user.signingkey ${SIGNINGKEY}
       - echo ${GPG_KEY} > private.key
-      - gpg --import provate.key
+      - gpg --import private.key
       - gpg --list-secret-keys --keyid-format LONG
     when:
       condition:
