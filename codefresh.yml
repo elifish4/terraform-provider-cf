@@ -27,6 +27,7 @@ steps:
       - source /get-token/get-gh-token.sh
       - cf_export GITHUB_TOKEN
       - cf_export GPG_PRIVATE_KEY
+      - cf_export GPG_public_KEY
       - cf_export GPG_FINGERPRINT
       - cf_export PASSPHRASE
     when:
@@ -40,7 +41,6 @@ steps:
     stage: release
     commands:
       - apk update
-      - apk add --update gpg
       - apk add gpg
       - apk fetch gnupg
       - apk add gnupg
