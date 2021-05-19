@@ -28,13 +28,14 @@ steps:
       - source /get-token/get-gh-token.sh
       - cf_export GITHUB_TOKEN
       - cf_export GPG_PRIVATE_KEY
+      - cf_export GPG_PUBLIC_KEY
       - cf_export GPG_FINGERPRINT
-      - cf_export PASSPHRASE
+      - cf_export SIGNINGKEY
       - apk update
       - apk fetch gnupg
       - apk add gnupg
       - git config user.signingkey ${SIGNINGKEY}
-      - echo ${GPG_KEY} > private.key
+      - echo ${GPG_PUBLICKEY} > private.key
       - gpg --import private.key
       - gpg --list-secret-keys --keyid-format LONG
     when:
@@ -46,9 +47,10 @@ steps:
     title: Create release in Github
     image:  goreleaser/goreleaser:v0.133
     stage: release
-    environment: 
+    environment:
       - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
       - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
+      - GPG_PUBLICKEY=${{GPG_PUBLICKEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - goreleaser release --rm-dist
