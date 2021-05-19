@@ -24,6 +24,11 @@ steps:
     title: 'Preparing environment variables...'
     stage: release
     image: codefreshio/ci-helpers
+    environment:
+      - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
+      - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
+      - GPG_PUBLICKEY=${{GPG_PUBLICKEY}}
+      - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - source /get-token/get-gh-token.sh
       - cf_export GITHUB_TOKEN
