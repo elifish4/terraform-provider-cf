@@ -36,13 +36,6 @@ steps:
       - cf_export GPG_PUBLIC_KEY
       - cf_export GPG_FINGERPRINT
       - cf_export SIGNINGKEY
-      - apk update
-      - apk fetch gnupg
-      - apk add gnupg
-      - git config user.signingkey ${SIGNINGKEY}
-      - echo ${GPG_PUBLICKEY} > private.key
-      - gpg --import private.key
-      - gpg --list-secret-keys --keyid-format LONG
     when:
       condition:
         all:
@@ -58,6 +51,13 @@ steps:
       - GPG_PUBLICKEY=${{GPG_PUBLICKEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
+      - apk update
+      - apk fetch gnupg
+      - apk add gnupg
+      - git config user.signingkey ${SIGNINGKEY}
+      - echo ${GPG_PUBLICKEY} > private.key
+      - gpg --import private.key
+      - gpg --list-secret-keys --keyid-format LONG
       - goreleaser release --rm-dist
     when:
       condition:
