@@ -41,7 +41,6 @@ steps:
     stage: release
     commands:
       - apk update
-      - apk add gpg
       - apk fetch gnupg
       - apk add gnupg
       - git config user.signingkey ${SIGNINGKEY}
