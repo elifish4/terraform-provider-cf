@@ -27,7 +27,7 @@ steps:
     environment:
       - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
       - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
-      - GPG_PUBLICKEY=${{GPG_PUBLICKEY}}
+      - GPG_PUBLIC_KEY=${{GPG_PUBLIC_KEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - source /get-token/get-gh-token.sh
@@ -48,15 +48,14 @@ steps:
     environment:
       - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
       - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
-      - GPG_PUBLICKEY=${{GPG_PUBLICKEY}}
+      - GPG_PUBLIC_KEY=${{GPG_PUBLIC_KEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - apk update
       - apk fetch gnupg
       - apk add gnupg
       - git config user.signingkey ${SIGNINGKEY}
-      - echo ${GPG_PUBLICKEY} > private.key
-      - gpg --import private.key
+      - echo ${GPG_PUBLIC_KEY} | gpg --import
       - gpg --list-secret-keys --keyid-format LONG
       - goreleaser release --rm-dist
     when:
