@@ -1,4 +1,3 @@
-
 # Terraform provider for Codefresh
 This provider was initialized by [LightStep](https://lightstep.com/) and will be maintained as the official Terraform provider for Codefresh.
 
