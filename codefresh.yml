@@ -26,14 +26,10 @@ steps:
     image: codefreshio/ci-helpers
     environment:
       - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
-      - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
-      - GPG_PUBLIC_KEY=${{GPG_PUBLIC_KEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - source /get-token/get-gh-token.sh
       - cf_export GITHUB_TOKEN
-      - cf_export GPG_PRIVATE_KEY
-      - cf_export GPG_PUBLIC_KEY
       - cf_export GPG_FINGERPRINT
       - cf_export SIGNINGKEY
     when:
@@ -47,16 +43,14 @@ steps:
     stage: release
     environment:
       - GPG_FINGERPRINT=${{GPG_FINGERPRINT}}
-      - GPG_PRIVATE_KEY=${{GPG_PRIVATE_KEY}}
-      - GPG_PUBLIC_KEY=${{GPG_PUBLIC_KEY}}
       - SIGNINGKEY=${{SIGNINGKEY}}
     commands:
       - apk update
       - apk fetch gnupg
       - apk add gnupg
-      - git config user.signingkey ${SIGNINGKEY}
-      - echo ${GPG_PUBLIC_KEY} | gpg --import
-      - gpg --list-secret-keys --keyid-format LONG
+      - gpg --import private.key
+      - git config user.signingkey ${GPG_FINGERPRINT}
+      - git clean -fdx
       - goreleaser release --rm-dist
     when:
       condition:
