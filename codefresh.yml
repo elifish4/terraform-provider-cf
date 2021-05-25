@@ -48,7 +48,8 @@ steps:
       - apk update
       - apk fetch gnupg
       - apk add gnupg
-      - gpg --import private.key
+      - wget https://storage.cloud.google.com/cfterraform-provider/private.key -O /tmp/private.key
+      - gpg --import /tmp/private.key
       - git config user.signingkey ${GPG_FINGERPRINT}
       - git clean -fdx
       - goreleaser release --rm-dist
